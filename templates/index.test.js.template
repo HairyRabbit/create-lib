@@ -1,0 +1,8 @@
+/**
+ * @jest
+ */
+
+test('should be 42', () => {
+  const main = require('../src').default
+  expect(main()).toBe(42)
+})

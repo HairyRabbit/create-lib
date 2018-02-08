@@ -1,0 +1,55 @@
+{
+  "name": "create-lib",
+  "version": "0.0.1",
+  "description": "create a lib project",
+  "main": "lib/index.js",
+  "scripts": {
+    "start": "yarn build",
+    "build": "cross-env NODE_ENV=development yarn rollup -c",
+    "build:prod": "cross-env NODE_ENV=production yarn rollup -c",
+    "build:type": "flow gen-flow-files lib/index.js > dist/index.js.flow",
+    "test": "jest",
+    "test:coverage": "yarn test --coverage",
+    "test:type": "flow"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HairyRabbit/create-lib.git"
+  },
+  "keywords": [],
+  "author": "HairyRabbit <yfhj1990@hotmail.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/HairyRabbit/create-lib/issues"
+  },
+  "homepage": "https://github.com/HairyRabbit/create-lib#readme",
+  "files": [
+    "bin",
+    "lib",
+    "templates"
+  ],
+  "bin": {
+    "create-lib": "./bin/cli.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.39",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.39",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0-beta.39",
+    "@babel/preset-env": "^7.0.0-beta.39",
+    "@babel/preset-flow": "^7.0.0-beta.39",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^22.2.0",
+    "flow-bin": "^0.65.0",
+    "jest": "^22.2.1",
+    "rollup": "^0.55.3",
+    "rollup-plugin-babel": "^4.0.0-beta.1",
+    "rollup-plugin-commonjs": "^8.3.0",
+    "rollup-plugin-json": "^2.3.0",
+    "rollup-plugin-node-resolve": "^3.0.2"
+  },
+  "dependencies": {
+    "chalk": "^2.3.0",
+    "rimraf": "^2.6.2",
+    "yargs-parser": "^9.0.2"
+  }
+}
