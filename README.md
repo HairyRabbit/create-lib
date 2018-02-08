@@ -7,7 +7,7 @@
 
 ```sh
 create-lib name dir
-  [|--cli
+  [| --cli
    | --helper
    | --webpack-plugin
    | --webpack-loader
