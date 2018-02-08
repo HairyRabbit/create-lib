@@ -1,0 +1,9 @@
+/**
+ * {{NAME}}{{FLOW:
+ *
+ * @flow}}
+ */
+
+{{FLOW:type Options = {
+
+}}}export { default as default } from './plugin'

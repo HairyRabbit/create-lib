@@ -1,0 +1,26 @@
+/**
+ * plugin{{FLOW:
+ *
+ * @flow}}
+ */
+
+import fs from 'fs'
+import path from 'path'
+import webpack from 'webpack'
+import DefaultOptions from './defaultOptions'{{FLOW:
+import type { Compiler } from 'webpack/lib/Compiler'                                      import type { Options } from './'}}
+
+export default class {{NAME}} {
+  constructor(options{{FLOW: Options}}) {
+    this.options = {
+      ...DefaultOptions,
+      ...options
+    }
+  }
+  apply(compiler{{FLOW: Compiler}}){{FLOW: void}} {
+    const options = this.options
+    compiler.apply('done', () => {
+      // @TODO: happy hack webpack
+    })
+  }
+}

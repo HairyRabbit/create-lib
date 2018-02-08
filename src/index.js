@@ -39,6 +39,7 @@
  */
 
 import parse from './argsParser'
+import cameCase from './cameCase'
 import * as platforms from './platforms'
 
 export type Options = {
@@ -62,5 +63,6 @@ export type Options = {
 export default function createLib(args: Array<string>) {
   const options = parse(args)
   const { platform } = options
-  platforms[platform](options)
+  console.log(options)
+  platforms[cameCase(platform)](options)
 }

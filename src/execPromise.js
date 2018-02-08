@@ -12,10 +12,10 @@ export default function execPromise(cmd: string, options: Object = {}): Promise<
       if(err) {
         reject(err)
       } else if(stderr) {
-        reject(stderr)
+        resolve(stderr.toString())
       }
 
-      resolve(stdout)
+      resolve(stdout.toString())
     })
   })
 }

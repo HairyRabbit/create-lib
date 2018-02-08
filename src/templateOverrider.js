@@ -9,8 +9,9 @@ import path from 'path'
 
 export default function writeTemplate(template: string,
                                       dir: string,
-                                      override: string => string = x => x): void {
-  const templateFileName = `${template}.template`
+                                      override?: string => string = x => x,
+                                      templateName?: string): void {
+  const templateFileName = `${templateName || template}.template`
   const templatePath = path.resolve(__dirname, `../templates/${templateFileName}`)
   if(!fs.existsSync(templatePath)) {
     throw new Error(`Can't find ${templateFileName} in ${templatePath}`)

@@ -1,5 +1,5 @@
 /**
- * create a cli project
+ * create a webpack plugin project
  *
  * @flow
  */
@@ -8,7 +8,10 @@ import fs from 'fs'
 import path from 'path'
 import exec from '../execPromise'
 import rmrf from '../rmrfPromise'
+import render from '../templateRender'
 import writeTemplate from '../templateOverrider'
+import cameCase from '../cameCase'
+import startCase from '../startCase'
 import type { Options } from '../'
 
 export default function create(options: Options): void {
@@ -28,7 +31,7 @@ export default function create(options: Options): void {
       pkg.main = 'lib/index.js'
       pkg.license = 'GPL-3.0'
       pkg.scripts = {}
-      pkg.scripts['start'] = 'yarn build && node bin/cli.js'
+      pkg.scripts['start'] = 'yarn build'
       pkg.scripts['prepublish'] = 'yarn test && yarn build:prod'
       pkg.scripts['build'] = 'cross-env NODE_ENV=development yarn rollup -c'
       pkg.scripts['build:prod'] = 'cross-env NODE_ENV=production yarn rollup -c'
@@ -42,8 +45,8 @@ export default function create(options: Options): void {
       if(options.flow) {
         pkg.scripts['test:type'] = 'flow check'
       }
-      pkg.files = ['bin', 'lib']
-      pkg.bin = { [options.name]: './bin/cli.js' }
+      pkg.files = ['lib']
+      pkg.peerDependencies = { webpack: '^2 | ^3' }
       fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2), 'utf-8')
       return
     })
@@ -54,9 +57,6 @@ export default function create(options: Options): void {
 # Project
 lib
 `)
-      /**
-       * @TODO: add README template
-       */
       fs.writeFileSync(path.resolve(options.dir, 'README.md'), `\
 ${options.name}
 ----
@@ -65,27 +65,22 @@ ${options.name}
     .then(() => {
       const srcPath = path.resolve(options.dir, 'src')
       fs.mkdirSync(srcPath)
-
       writeTemplate('index.js', srcPath, content => {
-        let str = `\
-/**
- * ${options.name}`
-        if(options.flow) {
-          str += `
- *
- * @flow
-`
-        }
+        content = content.replace(/{{NAME}}/, options.name)
+        content = render(content, 'FLOW', options.flow)
+        return content
+      }, 'index.webpack-plugin.js')
 
-        str += `
-*/
-`
-        return str + content
+      writeTemplate('plugin.js', srcPath, content => {
+        content = content.replace(/{{NAME}}/, startCase(cameCase(options.name)))
+        content = render(content, 'FLOW', options.flow)
+        return content
       })
 
-      const binPath = path.resolve(options.dir, 'bin')
-      fs.mkdirSync(binPath)
-      writeTemplate('cli.js', binPath)
+      writeTemplate('defaultOptions.js', srcPath, content => {
+        content = render(content, 'FLOW', options.flow)
+        return content
+      })
 
       const testPath = path.resolve(options.dir, 'tests')
       fs.mkdirSync(testPath)
@@ -124,7 +119,6 @@ ${options.name}
           'rollup-plugin-commonjs',
           'rollup-plugin-json',
           'rollup-plugin-node-resolve',
-          'webpack',
           devDeps
         ).join(' ')),
         deps.length ? exec(`yarn add ${deps.join(' ')}`) : Promise.resolve()
@@ -138,7 +132,6 @@ ${options.name}
       if(!options.dirExists) {
         return rmrf(options.dir)
       }
-
       return null
     })
 }

@@ -64,7 +64,7 @@ export default function parseArgs(args: Array<string>): Options {
     'cli',
     'helper',
     'webpack-loader',
-    'webpack-config',
+    'webpack-plugin',
     'react'
   ].sort().reduce((acc, curr) => {
     return opts[curr] ? curr : acc
@@ -74,6 +74,7 @@ export default function parseArgs(args: Array<string>): Options {
     name,
     dir,
     dirExists,
+    // $FlowFixMe
     platform,
     jest: opts.jest,
     flow: opts.flow,

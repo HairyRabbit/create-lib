@@ -30,11 +30,6 @@ export default [{
       commonjs()
     ),
     external: [].concat(
-      'repl',
-      'child_process',
-      'path',
-      'fs',
-      '../lib',
       Object.keys(Object.assign(
         {},
         pkg.dependencies,

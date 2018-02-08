@@ -4,4 +4,5 @@
  * @flow
  */
 
-export { default as cli } from './cli.js'
+export { default as cli } from './cli'
+export { default as webpackPlugin } from './webpack-plugin'

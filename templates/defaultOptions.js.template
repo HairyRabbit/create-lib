@@ -1,0 +1,11 @@
+/**
+ * defaultOptions{{FLOW:
+ *
+ * @flow}}
+ */
+
+{{FLOW:import type { Options } from './'
+
+}}export default {
+
+}

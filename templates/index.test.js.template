@@ -2,7 +2,7 @@
  * @jest
  */
 
-test('should be 42', () => {
+test('should not be undefined', () => {
   const main = require('../src').default
-  expect(main()).toBe(42)
+  expect(main).not.toBe(undefined)
 })
