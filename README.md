@@ -8,11 +8,11 @@
 ```sh
 create-lib name dir
   [| --cli
-   | --helper
+   | --helper(TODO)
    | --webpack-plugin
-   | --webpack-loader
-   | --react
-   | --lerna(not supports)]
+   | --webpack-loader(TODO)
+   | --react(TODO)
+   | --lerna(TODO)]
   [--no-flow]
   [--no-jest]
   [--lodash]

@@ -11,16 +11,17 @@ import rmrf from '../rmrfPromise'
 import writeTemplate from '../templateOverrider'
 import type { Options } from '../'
 
-export default function create(options: Options): void {
+export default function create(options: Options): Promise<*> {
   /**
    * mkdir if dir not exits, then cd to target dir
    */
   if(!options.dirExists) {
     fs.mkdirSync(options.dir)
   }
+  const oldDir = process.cwd()
   process.chdir(options.dir)
 
-  exec('npm init -y')
+  return exec('npm init -y')
     .then(() => {
       const pkgPath = path.resolve(options.dir, 'package.json')
       const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'))
@@ -33,7 +34,7 @@ export default function create(options: Options): void {
       pkg.scripts['build'] = 'cross-env NODE_ENV=development yarn rollup -c'
       pkg.scripts['build:prod'] = 'cross-env NODE_ENV=production yarn rollup -c'
       if(options.flow) {
-        pkg.scripts['build:type'] = `flow gen-flow-files lib/index.js > dist/${options.name}.js.flow`
+        pkg.scripts['build:type'] = `flow gen-flow-files src/index.js > lib/${options.name}.js.flow`
       }
       if(options.jest) {
         pkg.scripts['test'] = 'jest'
@@ -124,7 +125,6 @@ ${options.name}
           'rollup-plugin-commonjs',
           'rollup-plugin-json',
           'rollup-plugin-node-resolve',
-          'webpack',
           devDeps
         ).join(' ')),
         deps.length ? exec(`yarn add ${deps.join(' ')}`) : Promise.resolve()
@@ -134,11 +134,10 @@ ${options.name}
       return exec(`yarn test`)
     })
     .catch(err => {
-      console.error(err)
+      process.chdir(oldDir)
       if(!options.dirExists) {
         return rmrf(options.dir)
       }
-
-      return null
+      throw err
     })
 }

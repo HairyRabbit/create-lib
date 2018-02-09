@@ -4,14 +4,27 @@
  * @flow
  */
 
-export default function render(content: stirng, flag: string, predicate: boolean): string {
-  const regexp = new RegExp(`{{${flag}:?`, 'g')
-  while(regexp.exec(content)) {
-
+export default function render(content: string, flag: string, predicate: boolean): string {
+  const splitBeg = '{{'
+  const splitEnd = '}}'
+  const regexpBeg = new RegExp(`${splitBeg}${flag}:`)
+  const regexpEnd = new RegExp(`${splitEnd}`)
+  while(true) {
+    const result = regexpBeg.exec(content)
+    if(result) {
+      const begin = result.index
+      const end = regexpEnd.exec(content).index
+      const value = content.slice(begin + splitBeg.length + flag.length + 1, end)
+      const left = content.slice(0, begin)
+      const right = content.slice(end + splitEnd.length)
+      if(predicate) {
+        content = left + value + right
+      } else {
+        content = left + right
+      }
+    } else {
+      break
+    }
   }
-  if(predicate) {
-    return content.replace(regexp, (_, a) => a)
-  } else {
-    return content.replace(regexp, '')
-  }
+  return content
 }

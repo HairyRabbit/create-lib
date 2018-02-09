@@ -60,9 +60,11 @@ export type Options = {
   deps: Array<string>
 }
 
-export default function createLib(args: Array<string>) {
+export default function createLib(args: Array<string>): Promise<*> {
   const options = parse(args)
   const { platform } = options
-  console.log(options)
-  platforms[cameCase(platform)](options)
+  /**
+   * @TODO pretty print options
+   */
+  return platforms[cameCase(platform)](options)
 }

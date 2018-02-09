@@ -6,4 +6,6 @@
 
 {{FLOW:type Options = {
 
-}}}export { default as default } from './plugin'
+}
+
+}}export { default as default } from './plugin'
