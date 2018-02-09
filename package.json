@@ -1,16 +1,17 @@
 {
-  "name": "create-lib",
-  "version": "0.0.1",
+  "name": "@rabbitcc/create-lib",
+  "version": "0.0.2",
   "description": "create a lib project",
   "main": "lib/index.js",
   "scripts": {
     "start": "yarn build",
     "build": "cross-env NODE_ENV=development yarn rollup -c",
     "build:prod": "cross-env NODE_ENV=production yarn rollup -c",
-    "build:type": "flow gen-flow-files lib/index.js > dist/index.js.flow",
+    "build:type": "flow gen-flow-files src/index.js > lib/index.js.flow",
     "test": "jest",
     "test:coverage": "yarn test --coverage",
-    "test:type": "flow"
+    "test:type": "flow",
+    "prepublish": "yarn test && yarn build:prod && yarn build:type"
   },
   "repository": {
     "type": "git",
